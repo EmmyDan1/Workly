@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ===========================
+     Canvas & Surfaces
+  =========================== */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --border: #e2e8f0;
+
+  /* ===========================
+     Typography
+  =========================== */
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --foreground-subtle: #94a3b8;
+
+  /* ===========================
+     Sidebar (Light)
+  =========================== */
+  --sidebar-bg: #ffffff;
+  --sidebar-fg: #0f172a;
+  --sidebar-fg-muted: #64748b;
+  --sidebar-active: #dbeafe;
+  --sidebar-border: #e2e8f0;
+
+  /* ===========================
+     Brand
+  =========================== */
+  --accent: #7295e0;
+  --accent-hover: #a4b6e9;
+  --accent-foreground: #ffffff;
+  --focus-ring: #93c5fd;
+
+  /* ===========================
+     Semantic Colors
+  =========================== */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #dc2626;
+  --info: #2563eb;
+
+  /* ===========================
+     Task Status
+  =========================== */
+  --status-todo: #94a3b8;
+  --status-progress: #2563eb;
+  --status-review: #f59e0b;
+  --status-done: #16a34a;
+  --status-blocked: #dc2626;
+
+  /* Status Badge Backgrounds */
+  --status-todo-bg: #f1f5f9;
+  --status-progress-bg: #dbeafe;
+  --status-review-bg: #fef3c7;
+  --status-done-bg: #dcfce7;
+  --status-blocked-bg: #fee2e2;
 }
+
+/* ==================================
+   Dark Theme
+================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-hover: #273449;
+    --border: #334155;
+
+    --foreground: #f8fafc;
+    --foreground-muted: #cbd5e1;
+    --foreground-subtle: #94a3b8;
+
+    --sidebar-bg: #050c1c;
+    --sidebar-fg: #f8fafc;
+    --sidebar-fg-muted: #94a3b8;
+    --sidebar-active: #556697;
+    --sidebar-border: #334155;
+
+    --accent: #DC2626;
+    --accent-hover: #60a5fa;
+    --accent-foreground: #ffffff;
+    --focus-ring: #60a5fa;
+
+    --status-todo-bg: #1e293b;
+    --status-progress-bg: #1e3a8a;
+    --status-review-bg: #3b2f10;
+    --status-done-bg: #14532d;
+    --status-blocked-bg: #450a0a;
+  }
+}
+
+/* ==================================
+   Tailwind Theme Tokens
+================================== */
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+
+  --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-foreground: var(--sidebar-fg);
+  --color-sidebar-foreground-muted: var(--sidebar-fg-muted);
+  --color-sidebar-active: var(--sidebar-active);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-focus-ring: var(--focus-ring);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  --color-status-todo: var(--status-todo);
+  --color-status-progress: var(--status-progress);
+  --color-status-review: var(--status-review);
+  --color-status-done: var(--status-done);
+  --color-status-blocked: var(--status-blocked);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ==================================
+   Base Styles
+================================== */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
