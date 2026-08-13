@@ -81,7 +81,7 @@ const CreateProjectModal = () => {
   if (!isCreateProjectOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6">
       {/* Backdrop */}
       <button
         type="button"
@@ -91,7 +91,7 @@ const CreateProjectModal = () => {
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-2xl overflow-y-scroll rounded-2xl border border-border bg-background shadow-2xl">
+      <div className="relative z-10 flex max-h-[calc(100vh-2rem)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl sm:max-h-[calc(100vh-3rem)]">
         {/* Header */}
         <div className="flex items-start justify-between border-b border-border px-7 py-6">
           <div className="flex items-start gap-4">
@@ -128,13 +128,16 @@ const CreateProjectModal = () => {
         </div>
 
         {/* Form */}
-        <CreateProjectForm
-          form={form}
-          updateForm={updateForm}
-          error={error}
-          onSubmit={handleCreateProject}
-          onClose={closeCreateProjectModal}
-        />
+{/* Form */}
+<div className="min-h-0 flex-1 overflow-y-auto">
+  <CreateProjectForm
+    form={form}
+    updateForm={updateForm}
+    error={error}
+    onSubmit={handleCreateProject}
+    onClose={closeCreateProjectModal}
+  />
+</div>
       </div>
     </div>
   );
