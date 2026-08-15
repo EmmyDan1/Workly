@@ -17,7 +17,6 @@ type ProjectContextType = {
   addProject: (project: Project) => void;
   updateProject: (id: string, updates: Partial<Project>) => void;
   deleteProject: (id: string) => void;
-
 };
 
 const ProjectContext = createContext<ProjectContextType | null>(null);
@@ -29,7 +28,6 @@ export const ProjectProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-
   const [projects, setProjects] = useState<Project[]>(() => {
     if (typeof window === "undefined") {
       return [];
@@ -38,7 +36,14 @@ export const ProjectProvider = ({
     try {
       const storedProjects = localStorage.getItem(PROJECTS_STORAGE_KEY);
 
-      return storedProjects ? JSON.parse(storedProjects) : [];
+      const parsedProjects: Project[] = storedProjects
+        ? JSON.parse(storedProjects)
+        : [];
+
+      return parsedProjects.map((project) => ({
+        ...project,
+        teamId: project.teamId ?? undefined,
+      }));
     } catch (error) {
       console.error("Failed to load projects:", error);
 
@@ -54,7 +59,6 @@ export const ProjectProvider = ({
     localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
   }, [projects]);
 
-  
   const openCreateProjectModal = () => {
     setIsCreateProjectOpen(true);
   };
@@ -89,7 +93,6 @@ export const ProjectProvider = ({
     );
   };
 
-  
   return (
     <ProjectContext.Provider
       value={{

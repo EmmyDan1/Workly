@@ -6,17 +6,15 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Select from "../ui/Select";
+import { Team } from "@/types/projects";
 
 type CreateProjectFormProps = {
   form: CreateProjectFormData;
-
   updateForm: (field: keyof CreateProjectFormData, value: string) => void;
-
   error: string;
-
   onSubmit: (e: React.FormEvent) => void;
-
   onClose: () => void;
+  teams: Team[];
 };
 const CreateProjectForm = ({
   form,
@@ -24,6 +22,7 @@ const CreateProjectForm = ({
   error,
   onSubmit,
   onClose,
+  teams,
 }: CreateProjectFormProps) => {
   const [pickerOpen, setPickerOpen] = useState(false);
   return (
@@ -187,6 +186,23 @@ const CreateProjectForm = ({
                 value: "No date",
                 label: "No date",
               },
+            ]}
+          />
+          <Select
+            label="Team"
+            value={form.teamId}
+            onChange={(value) => updateForm("teamId", value)}
+            options={[
+              {
+                value: "",
+                label: "No team",
+                description: "This project isn't assigned to a team",
+              },
+              ...teams.map((team) => ({
+                value: team.id,
+                label: team.name,
+                description: team.description,
+              })),
             ]}
           />
         </div>

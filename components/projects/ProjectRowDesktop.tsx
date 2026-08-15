@@ -1,4 +1,3 @@
-"use client";
 
 import { ChevronRight, Circle, MoreHorizontal } from "lucide-react";
 
@@ -21,6 +20,15 @@ export const healthStyles: Record<string, string> = {
   "off-track": "text-red-500",
 };
 
+export const statusLabels: Record<string, string> = {
+  backlog: "Backlog",
+  planned: "Planned",
+  "in-progress": "In Progress",
+  completed: "Completed",
+  canceled: "Canceled",
+};
+
+
 const priorityStyles: Record<string, string> = {
   low: "bg-surface text-foreground-muted",
   medium: "bg-surface text-foreground",
@@ -28,13 +36,8 @@ const priorityStyles: Record<string, string> = {
   urgent: "bg-red-500/10 text-red-500",
 };
 
-const statusLabels: Record<string, string> = {
-  backlog: "Backlog",
-  planned: "Planned",
-  "in-progress": "In Progress",
-  completed: "Completed",
-  canceled: "Canceled",
-};
+
+
 
 const ProjectRowDesktop = ({
   project,
@@ -56,36 +59,37 @@ const ProjectRowDesktop = ({
           onOpen();
         }
       }}
-      className={`group relative hidden w-full cursor-pointer items-center gap-4 px-4 py-3 transition-colors last:border-b-0 hover:bg-surface-hover lg:grid ${projectGrid}`}
+      className={`group relative hidden w-full cursor-pointer items-center gap-4 border-b border-border/70 px-4 py-3.5 transition-colors hover:bg-surface-hover lg:grid ${projectGrid}`}
     >
       {/* Project */}
       <div className="flex min-w-0 items-center gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/80 bg-surface transition-colors group-hover:border-border">
           {project.emoji ? (
             <span className="text-base leading-none">{project.emoji}</span>
           ) : (
             <ProjectIcon
               icon={project.icon}
               size={17}
-              className="text-foreground-muted"
+              className="text-foreground-muted transition-colors group-hover:text-foreground"
             />
           )}
         </div>
 
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <h3 className="truncate text-[13px] font-medium text-foreground">
+            <h3 className="truncate text-[13px] font-medium tracking-[-0.01em] text-foreground">
               {project.name}
             </h3>
 
             <ChevronRight
               size={13}
-              className="shrink-0 text-foreground-muted opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
+              strokeWidth={1.8}
+              className="shrink-0 text-foreground-muted opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100"
             />
           </div>
 
           {project.description && (
-            <p className="mt-0.5 truncate text-[11px] text-foreground-muted">
+            <p className="mt-0.5 truncate text-[11px] leading-4 text-foreground-muted">
               {project.description}
             </p>
           )}
@@ -95,21 +99,20 @@ const ProjectRowDesktop = ({
       {/* Health */}
       <div className="flex min-w-0 items-center gap-2">
         <Circle
-          size={8}
+          size={7}
           fill="currentColor"
+          strokeWidth={0}
           className={healthStyles[project.health]}
         />
 
-        <span className="truncate text-xs text-foreground-muted">
+        <span className="truncate text-[11px] capitalize text-foreground-muted">
           {project.health.replace("-", " ")}
         </span>
       </div>
 
       {/* Priority */}
-      <div>
-        <span
-          className={`inline-flex rounded-md px-2 py-1 text-[11px] font-medium capitalize ${priorityStyles[project.priority]}`}
-        >
+      <div className="min-w-0 text-xs">
+        <span className={priorityStyles[project.priority]}>
           {project.priority}
         </span>
       </div>
@@ -120,22 +123,24 @@ const ProjectRowDesktop = ({
           {project.lead?.charAt(0).toUpperCase()}
         </div>
 
-        <span className="truncate text-xs text-foreground">{project.lead}</span>
+        <span className="truncate text-[11px] text-foreground-muted">
+          {project.lead}
+        </span>
       </div>
 
       {/* Target date */}
-      <span className="truncate text-xs text-foreground-muted">
+      <span className="truncate text-[11px] tabular-nums text-foreground-muted">
         {project.targetDate}
       </span>
 
-
-      <div className="text-xs tabular-nums text-foreground-muted">
+      {/* Issues */}
+      <div className="text-[11px] tabular-nums text-foreground-muted">
         <ProjectIssueCount projectId={project.id} />
       </div>
 
       {/* Status */}
-      <div>
-        <span className="inline-flex rounded-md border border-border bg-surface px-2 py-1 text-[11px] text-foreground-muted">
+      <div className="min-w-0">
+        <span className="inline-flex max-w-full truncate rounded-md border border-border/80 bg-surface px-2 py-1 text-[10px] font-medium text-foreground-muted">
           {statusLabels[project.status]}
         </span>
       </div>
@@ -150,13 +155,13 @@ const ProjectRowDesktop = ({
           aria-label={`More options for ${project.name}`}
           aria-expanded={actionsOpen}
           onClick={onActions}
-          className={`rounded-md p-1.5 text-foreground-muted transition hover:bg-surface hover:text-foreground ${
+          className={`rounded-md p-1.5 text-foreground-muted transition-all duration-150 hover:bg-surface hover:text-foreground ${
             actionsOpen
               ? "bg-surface text-foreground"
               : "opacity-0 group-hover:opacity-100"
           }`}
         >
-          <MoreHorizontal size={15} />
+          <MoreHorizontal size={15} strokeWidth={2} />
         </button>
       </div>
     </div>

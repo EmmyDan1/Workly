@@ -1,5 +1,10 @@
 "use client";
-import { PanelLeftOpen, PanelLeftClose } from "lucide-react";
+
+import {
+  PanelLeftOpen,
+  PanelLeftClose,
+} from "lucide-react";
+
 import { PageConfig } from "@/pageConfig";
 
 type PageHeaderProps = {
@@ -18,33 +23,41 @@ const PageHeader = ({
   onHeaderAction,
 }: PageHeaderProps) => {
   return (
-    <header
-      className="h-14 border-b border-border flex items-center px-6 shrink-0 justify-between "
-      title={title}
-    >
-      <button
-        className="rounded-md text-foreground-muted hover:bg-surface-hover lg:hidden"
-        onClick={toggleSidebar}
-      >
-        {isSidebarOpen ? (
-          <PanelLeftClose size={16} strokeWidth={2} />
-        ) : (
-          <PanelLeftOpen size={16} strokeWidth={2} />
-        )}
-      </button>
-
-      <h1 className=" ml-4 text-sm font-semibold ">{title}</h1>
-      {headerAction && (
+    <header className="flex h-14 shrink-0 items-center border-b border-border px-4 sm:px-6">
+      {/* Left */}
+      <div className="flex min-w-0 items-center gap-2">
         <button
           type="button"
-          onClick={onHeaderAction}
-          className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs font-medium text-foreground-muted transition hover:bg-surface-hover hover:text-foreground"
+          aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+          onClick={toggleSidebar}
+          className="rounded-md p-1.5 text-foreground-muted transition-colors hover:bg-surface-hover hover:text-foreground lg:hidden"
         >
-          <headerAction.icon size={16} strokeWidth={2} />
-
-          <span>{headerAction.label}</span>
+          {isSidebarOpen ? (
+            <PanelLeftClose size={16} strokeWidth={2} />
+          ) : (
+            <PanelLeftOpen size={16} strokeWidth={2} />
+          )}
         </button>
-      )}
+
+        <span className="text-[14px] mt-1 font-medium text-foreground">
+          {title}
+        </span>
+      </div>
+
+      {/* Right */}
+      <div className="ml-auto flex items-center gap-1">
+        {headerAction && (
+          <button
+            type="button"
+            aria-label={headerAction.label}
+            title={headerAction.label}
+            onClick={onHeaderAction}
+            className="rounded-md p-1.5 text-foreground-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+          >
+            <headerAction.icon size={16} strokeWidth={2} />
+          </button>
+        )}
+      </div>
     </header>
   );
 };

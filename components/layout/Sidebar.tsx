@@ -5,13 +5,12 @@ import Link from "next/link";
 import {
   ChevronDown,
   SearchIcon,
-  LayoutDashboard,
+  House,
   FolderKanban,
-  UserRound,
-  Settings,
+  UsersRound,
+  Settings2,
   SquarePen,
 } from "lucide-react";
-
 type SidebarProps = {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
@@ -25,9 +24,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
 
   const navItems: NavItem[] = [
     {
-      title: "Dashboard",
+      title: "Workspace",
       route: "/dashboard",
-      icon: LayoutDashboard,
+      icon: House,
     },
     {
       title: "Projects",
@@ -37,12 +36,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
     {
       title: "Teams",
       route: "/teams",
-      icon: UserRound,
+      icon: UsersRound,
     },
     {
       title: "Settings",
       route: "/settings",
-      icon: Settings,
+      icon: Settings2,
     },
   ];
 

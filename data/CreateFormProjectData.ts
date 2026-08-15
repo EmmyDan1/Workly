@@ -9,6 +9,7 @@ type CreateProjectFormData = {
   targetDate: string;
   icon: ProjectIcon;
   emoji?: string;
+  teamId: string;
 };
 
 export default CreateProjectFormData;

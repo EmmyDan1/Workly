@@ -19,7 +19,7 @@ export type PageConfig = {
 };
 export const pageConfig: Record<string, PageConfig> = {
   "/dashboard": {
-    title: "Dashboard",
+    title: "Workspace",
     mode: "title",
     tabs: [],
   },

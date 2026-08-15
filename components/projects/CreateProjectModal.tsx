@@ -3,7 +3,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { useProject } from "../providers/ProjectProvider";
 import { useNotification } from "@/components/providers/NotificationProvider";
-
+import { useTeam } from "../providers/TeamProvider";
 import ProjectIcon from "./ProjectIcon";
 import CreateProjectForm from "./CreateProjectForm";
 
@@ -13,6 +13,7 @@ const CreateProjectModal = () => {
   const { isCreateProjectOpen, closeCreateProjectModal, addProject } =
     useProject();
   const { notify } = useNotification();
+  const { teams } = useTeam();
 
   const [form, setForm] = useState({
     name: "",
@@ -23,6 +24,7 @@ const CreateProjectModal = () => {
     targetDate: "",
     icon: "folder" as ProjectIconType,
     emoji: undefined as string | undefined,
+    teamId: "",
   });
 
   const [error, setError] = useState("");
@@ -46,6 +48,7 @@ const CreateProjectModal = () => {
       id: crypto.randomUUID(),
       name: form.name.trim(),
       description: form.description.trim(),
+       teamId: form.teamId || undefined,
       status: form.status as
         | "backlog"
         | "planned"
@@ -72,6 +75,7 @@ const CreateProjectModal = () => {
       targetDate: "",
       icon: "folder",
       emoji: undefined,
+      teamId: "",
     });
 
     setError("");
@@ -126,18 +130,16 @@ const CreateProjectModal = () => {
             <X size={18} />
           </button>
         </div>
-
-        {/* Form */}
-{/* Form */}
-<div className="min-h-0 flex-1 overflow-y-auto">
-  <CreateProjectForm
-    form={form}
-    updateForm={updateForm}
-    error={error}
-    onSubmit={handleCreateProject}
-    onClose={closeCreateProjectModal}
-  />
-</div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <CreateProjectForm
+            form={form}
+            updateForm={updateForm}
+            error={error}
+            onSubmit={handleCreateProject}
+            onClose={closeCreateProjectModal}
+            teams={teams}
+          />
+        </div>
       </div>
     </div>
   );

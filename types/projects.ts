@@ -40,6 +40,24 @@ export type ProjectIcon =
   | "file"
   | "headphones";
 
+export type ProjectResource = {
+  id: string;
+  projectId: string;
+  title: string;
+  type: "document" | "link";
+  url: string;
+  createdAt: string;
+};
+
+export type ProjectMilestone = {
+  id: string;
+  projectId: string;
+  title: string;
+  description?: string;
+  targetDate?: string;
+  completed: boolean;
+};
+
 export type Project = {
   id: string;
   name: string;
@@ -48,6 +66,8 @@ export type Project = {
   status: ProjectStatus;
   health: ProjectHealth;
   priority: ProjectPriority;
+
+  teamId?: string;
 
   lead: string;
   members: number;
@@ -98,6 +118,14 @@ export type ProjectMember = {
   avatar?: string;
 };
 
+export type Team = {
+  id: string;
+  name: string;
+  description?: string;
+  memberIds: string[];
+  createdAt: string;
+};
+
 export type IssueActivityType =
   | "created"
   | "status_changed"
@@ -105,7 +133,7 @@ export type IssueActivityType =
   | "assignee_changed"
   | "title_changed"
   | "description_changed"
-  | "comment_added"
+  | "comment_added";
 export type IssueActivity = {
   id: string;
   issueId: string;
