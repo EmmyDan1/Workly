@@ -1,5 +1,7 @@
 "use client";
 
+import CreateProjectModal from "../projects/CreateProjectModal";
+import CreateTeamModal from "../projects/team/CreateTeamModal";
 import RightSection from "./RightSection";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
@@ -21,23 +23,27 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   };
 
   return (
-    <div className="flex min-h-screen w-full">
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        searchOpen={searchOpen}
-        toggleSearch={toggleSearch}
-      />
+    <>
+      <div className="flex min-h-screen w-full">
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          searchOpen={searchOpen}
+          toggleSearch={toggleSearch}
+        />
 
-      <RightSection
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        searchOpen={searchOpen}
-        toggleSearch={toggleSearch}
-      >
-        {children}
-      </RightSection>
-    </div>
+        <RightSection
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          searchOpen={searchOpen}
+          toggleSearch={toggleSearch}
+        >
+          {children}
+        </RightSection>
+      </div>
+      <CreateProjectModal />
+      <CreateTeamModal />
+    </>
   );
 };
 

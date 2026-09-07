@@ -12,7 +12,7 @@ export default function TeamsPage() {
 
   return (
     <>
-      {/* Page header */}
+   
       <div className="flex items-end justify-between gap-4">
         <div className="min-w-0">
           <h1 className="text-base font-semibold tracking-tight text-foreground">
@@ -34,7 +34,7 @@ export default function TeamsPage() {
         </button>
       </div>
 
-      {/* Team list */}
+
       <div className="mt-6 overflow-hidden rounded-xl border border-border bg-background">
         {teams.length > 0 ? (
           <div className="divide-y divide-border">
@@ -52,8 +52,8 @@ export default function TeamsPage() {
                 }}
                 className="group flex w-full cursor-pointer items-center gap-3 px-4 py-3.5 transition-colors hover:bg-surface-hover"
               >
-                {/* Team icon */}
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-surface">
+               
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-green-300 bg-surface">
                   <Users
                     size={16}
                     strokeWidth={1.8}
@@ -61,7 +61,7 @@ export default function TeamsPage() {
                   />
                 </div>
 
-                {/* Team information */}
+              
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h2 className="truncate text-sm font-medium text-foreground">
@@ -81,13 +81,13 @@ export default function TeamsPage() {
                   )}
                 </div>
 
-                {/* Member count */}
+            
                 <div className="flex shrink-0 items-center gap-1.5 text-[11px] text-foreground-muted">
                   <Users size={13} strokeWidth={1.8} />
 
                   <span>
-                    {team.memberIds.length}{" "}
-                    {team.memberIds.length === 1 ? "member" : "members"}
+                    {team.memberIds?.length ?? 0}{" "}
+                    {(team.memberIds?.length ?? 0) === 1 ? "member" : "members"}
                   </span>
                 </div>
               </div>

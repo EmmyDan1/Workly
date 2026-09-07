@@ -79,7 +79,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
 
             <div className="text-sidebar-foreground-muted flex justify-between">
               <Link href="/search" className="">
-                <SearchIcon size={14} className="mr-4" />
+                <SearchIcon size={14} className="mr-4 mt-1" />
               </Link>
               <button className="hover:bg-slate-50 p-1 rounded-lg">
                 <SquarePen size={14} />
@@ -119,7 +119,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
                 <li key={item.route}>
                   <Link
                     href={item.route}
-                    className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-sidebar-foreground-muted transition-all duration-200 hover:bg-sidebar-active hover:text-sidebar-foreground"
+                    className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-sidebar-foreground-muted transition-all duration-200 hover:bg-[#94a3b8]/60 hover:text-sidebar-foreground"
                     onClick={() => {
                       if (isSidebarOpen) {
                         toggleSidebar();

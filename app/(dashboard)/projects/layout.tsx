@@ -1,5 +1,4 @@
 "use client";
-import CreateProjectModal from "@/components/projects/CreateProjectModal";
 import EditProjectModal from "@/components/projects/EditProjectModal";
 import { useProject } from "@/components/providers/ProjectProvider";
 
@@ -13,8 +12,6 @@ export default function ProjectsLayout({
   return (
     <>
       {children}
-
-      <CreateProjectModal />
 
       <EditProjectModal
         key={editingProjectId ?? "none"}

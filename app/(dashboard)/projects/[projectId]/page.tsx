@@ -26,9 +26,7 @@ export default function ProjectPage() {
     (project) => project.id === projectId
   );
 
-  /*
-   * Project does not exist
-   */
+
   if (!project) {
     return (
       <>

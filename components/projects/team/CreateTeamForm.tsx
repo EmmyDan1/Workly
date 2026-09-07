@@ -48,9 +48,9 @@ const CreateTeamForm = ({
   return (
     <form onSubmit={onSubmit}>
       <div className="space-y-6 px-7 py-6">
-        {/* Team identity */}
+      
         <div className="flex items-start gap-4">
-          <div className="mt-6 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-surface">
+          <div className="mt-6 flex  shrink-0 items-center justify-center  border border-border bg-surface">
             <Users
               size={19}
               strokeWidth={1.8}
@@ -74,7 +74,7 @@ const CreateTeamForm = ({
           </div>
         </div>
 
-        {/* Description */}
+  
         <div>
           <label className="mb-2 block text-xs font-medium text-foreground-muted">
             Description
@@ -91,7 +91,6 @@ const CreateTeamForm = ({
           </p>
         </div>
 
-        {/* Members */}
         <div className="relative">
           <label className="mb-2 block text-xs font-medium text-foreground-muted">
             Members
@@ -164,7 +163,7 @@ const CreateTeamForm = ({
         </div>
       </div>
 
-      {/* Footer */}
+     
       <div className="flex items-center justify-between border-t border-border bg-surface/40 px-7 py-4">
         <p className="hidden text-xs text-foreground-muted sm:block">
           You can manage team members later.

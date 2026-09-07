@@ -70,6 +70,9 @@ export type Project = {
   teamId?: string;
 
   lead: string;
+  leadName?: string;
+  leadEmail?: string;
+  leadAvatar?: string;
   members: number;
   memberIds?: string[];
 
@@ -158,3 +161,9 @@ export type IssueComment = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type SettingsSection =
+  | "profile"
+  | "preferences"
+  | "notifications"
+  | "appearance";

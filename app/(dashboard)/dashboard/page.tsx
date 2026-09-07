@@ -1,19 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, CircleCheck, FolderKanban, UsersRound } from "lucide-react";
-
+import {
+  ArrowUpRight,
+  CircleCheck,
+  FolderKanban,
+  UsersRound,
+} from "lucide-react";
 import { useProject } from "@/components/providers/ProjectProvider";
 import ProjectIcon from "@/components/projects/ProjectIcon";
 
 export default function DashboardPage() {
   const { projects } = useProject();
 
+  const getInitials = (name?: string) => {
+    if (!name) return "?";
+
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  };
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
-      {/* Workspace header */}
+      
       <div className="mb-10">
-        <h1 className="text-2xl font-medium tracking-tight text-foreground">
+        <h1 className="text-3xl font-medium tracking-tight text-blue-400">
           Workspace
         </h1>
         <p className="mt-1 text-sm text-foreground-muted">
@@ -69,9 +84,7 @@ export default function DashboardPage() {
               strokeWidth={1.5}
               className="text-foreground-muted"
             />
-            <span className="text-sm font-medium text-foreground">
-              Team
-            </span>
+            <span className="text-sm font-medium text-foreground">Team</span>
             <ArrowUpRight
               size={15}
               className="ml-auto text-foreground-muted opacity-0 transition-opacity group-hover:opacity-100"
@@ -99,9 +112,7 @@ export default function DashboardPage() {
         <div className="divide-y divide-border border-y border-border">
           {projects.length === 0 ? (
             <div className="py-10 text-center">
-              <p className="text-sm text-foreground-muted">
-                No projects yet.
-              </p>
+              <p className="text-sm text-foreground-muted">No projects yet.</p>
             </div>
           ) : (
             projects.map((project) => (
@@ -134,7 +145,9 @@ export default function DashboardPage() {
                     {project.members} member{project.members !== 1 ? "s" : ""}
                   </span>
                 </div>
-
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-[10px] font-medium text-background">
+                  {getInitials(project.leadName)}
+                </div>
                 <ArrowUpRight
                   size={15}
                   className="shrink-0 text-foreground-muted opacity-0 transition-opacity group-hover:opacity-100"

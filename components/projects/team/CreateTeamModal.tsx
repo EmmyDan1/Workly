@@ -50,14 +50,7 @@ const CreateTeamModal = () => {
       return;
     }
 
-    addTeam({
-      id: crypto.randomUUID(),
-      name: form.name.trim(),
-      description: form.description.trim(),
-      memberIds: form.memberIds,
-      createdAt: new Date().toISOString(),
-    });
-
+    addTeam(form.name.trim(), form.description.trim());
     notify.success("Team created successfully");
 
     setForm({
@@ -73,7 +66,6 @@ const CreateTeamModal = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <button
         type="button"
         aria-label="Close modal"
@@ -81,9 +73,7 @@ const CreateTeamModal = () => {
         className="absolute inset-0 bg-black/40 backdrop-blur-[3px]"
       />
 
-      {/* Modal */}
       <div className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-background shadow-2xl">
-        {/* Header */}
         <div className="flex items-start justify-between border-b border-border px-7 py-6">
           <div className="flex items-start gap-4">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface">

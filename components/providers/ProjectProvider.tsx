@@ -15,49 +15,61 @@ type ProjectContextType = {
   closeEditProjectModal: () => void;
 
   addProject: (project: Project) => void;
-  updateProject: (id: string, updates: Partial<Project>) => void;
+  updateProject: (id: string, updates: Partial<Project>) => Promise<void>;
   deleteProject: (id: string) => void;
 };
 
 const ProjectContext = createContext<ProjectContextType | null>(null);
 
-const PROJECTS_STORAGE_KEY = "project-management-projects";
+
 
 export const ProjectProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [projects, setProjects] = useState<Project[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const storedProjects = localStorage.getItem(PROJECTS_STORAGE_KEY);
-
-      const parsedProjects: Project[] = storedProjects
-        ? JSON.parse(storedProjects)
-        : [];
-
-      return parsedProjects.map((project) => ({
-        ...project,
-        teamId: project.teamId ?? undefined,
-      }));
-    } catch (error) {
-      console.error("Failed to load projects:", error);
-
-      return [];
-    }
-  });
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-  // Persist projects
   useEffect(() => {
-    localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
-  }, [projects]);
+    const fetchProjects = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/projects", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+
+        const data = await response.json();
+
+        setProjects(
+          data.map((project: any) => ({
+            ...project,
+            teamId: project.team_id,
+            targetDate: project.target_date,
+            updatedAt: project.updated_at,
+            lead: project.lead_name,
+            leadName: project.lead_name,
+            leadEmail: project.lead_email,
+          })),
+        );
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const openCreateProjectModal = () => {
     setIsCreateProjectOpen(true);
@@ -80,17 +92,76 @@ export const ProjectProvider = ({
     closeCreateProjectModal();
   };
 
-  const updateProject = (id: string, updates: Partial<Project>) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === id ? { ...project, ...updates } : project,
-      ),
-    );
+  const updateProject = async (id: string, updates: Partial<Project>) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: updates.name,
+          description: updates.description,
+          status: updates.status,
+          health: updates.health,
+          priority: updates.priority,
+          targetDate: updates.targetDate,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update project");
+      }
+
+      const data = await response.json();
+
+      const updatedProject: Project = {
+        ...data,
+        teamId: data.team_id,
+        targetDate: data.target_date,
+        updatedAt: data.updated_at,
+        lead: data.lead_name,
+        leadName: data.lead_name,
+        leadEmail: data.lead_email,
+      };
+
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === id ? updatedProject : project,
+        ),
+      );
+    } catch (error) {
+      console.error("Failed to update project:", error);
+    }
   };
-  const deleteProject = (id: string) => {
-    setProjects((prevProjects) =>
-      prevProjects.filter((project) => project.id !== id),
-    );
+  const deleteProject = async (id: string) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete project");
+      }
+
+      setProjects((prevProjects) =>
+        prevProjects.filter((project) => project.id !== id),
+      );
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
   };
 
   return (

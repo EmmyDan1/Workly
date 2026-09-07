@@ -36,7 +36,37 @@ const CreateProjectModal = () => {
     }));
   };
 
-  const handleCreateProject = (e: React.FormEvent) => {
+  const getTargetDate = (value: string): string | undefined => {
+    const today = new Date();
+
+    if (value === "No date" || !value) {
+      return undefined;
+    }
+
+    if (value === "This month") {
+      return new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        .toISOString()
+        .split("T")[0];
+    }
+
+    if (value === "Next month") {
+      return new Date(today.getFullYear(), today.getMonth() + 2, 0)
+        .toISOString()
+        .split("T")[0];
+    }
+
+    if (value === "This quarter") {
+      const quarterEndMonth = Math.floor(today.getMonth() / 3) * 3 + 2;
+
+      return new Date(today.getFullYear(), quarterEndMonth + 1, 0)
+        .toISOString()
+        .split("T")[0];
+    }
+
+    return undefined;
+  };
+
+  const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!form.name.trim()) {
@@ -44,42 +74,67 @@ const CreateProjectModal = () => {
       return;
     }
 
-    addProject({
-      id: crypto.randomUUID(),
-      name: form.name.trim(),
-      description: form.description.trim(),
-       teamId: form.teamId || undefined,
-      status: form.status as
-        | "backlog"
-        | "planned"
-        | "in-progress"
-        | "completed"
-        | "canceled",
-      health: "on-track",
-      priority: form.priority as "low" | "medium" | "high" | "urgent",
-      lead: form.lead || "Daniel",
-      members: 1,
-      memberIds: ["daniel"],
-      targetDate: form.targetDate || "No date",
-      updatedAt: "Just now",
-      icon: form.icon,
-      emoji: form.emoji,
-    });
-    notify.success("Project created successfully");
-    setForm({
-      name: "",
-      description: "",
-      status: "planned",
-      priority: "medium",
-      lead: "Daniel",
-      targetDate: "",
-      icon: "folder",
-      emoji: undefined,
-      teamId: "",
-    });
+    const token = localStorage.getItem("token");
 
-    setError("");
-    closeCreateProjectModal();
+    if (!token) {
+      setError("You must be logged in to create a project.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          teamId: form.teamId,
+          name: form.name.trim(),
+          description: form.description.trim(),
+          status: form.status,
+          health: "on-track",
+          priority: form.priority,
+          targetDate: getTargetDate(form.targetDate),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to create project");
+      }
+
+      addProject({
+        ...data,
+        teamId: data.team_id,
+        targetDate: data.target_date,
+        updatedAt: data.updated_at,
+        lead: data.lead_id,
+      });
+
+      notify.success("Project created successfully");
+
+      setForm({
+        name: "",
+        description: "",
+        status: "planned",
+        priority: "medium",
+        lead: "Daniel",
+        targetDate: "",
+        icon: "folder",
+        emoji: undefined,
+        teamId: "",
+      });
+
+      setError("");
+      closeCreateProjectModal();
+    } catch (error) {
+      console.error("Failed to create project:", error);
+      setError(
+        error instanceof Error ? error.message : "Failed to create project",
+      );
+    }
   };
 
   if (!isCreateProjectOpen) return null;

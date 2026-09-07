@@ -42,16 +42,17 @@ const TeamDetailPage = () => {
     );
   }
 
-  const teamMembers = members.filter((member) =>
-    team.memberIds.includes(member.id),
-  );
+  const memberIds = team.memberIds ?? [];
+
+  const teamMembers = members.filter((member) => memberIds.includes(member.id));
+
   const availableMembers = members.filter(
-    (member) => !team.memberIds.includes(member.id),
+    (member) => !memberIds.includes(member.id),
   );
 
   return (
     <div className="mx-auto w-full max-w-4xl">
-      {/* Back */}
+   
       <button
         type="button"
         onClick={() => router.push("/teams")}
