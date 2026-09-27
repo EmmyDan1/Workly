@@ -8,31 +8,36 @@ import { CommentProvider } from "@/components/providers/CommentProvider";
 import { TeamProvider } from "@/components/providers/TeamProvider";
 import { ProjectResourceProvider } from "@/components/providers/ProjectResourceProvider";
 import { ProjectMilestoneProvider } from "../../components/providers/ProjectMilestoneProvider";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DashboardLayout({
+  children,
+}: DashboardLayoutProps) {
   return (
-    <ProjectProvider>
-      <NotificationProvider>
-        <ActivityProvider>
-          <CommentProvider>
-            <IssueProvider>
-              <MemberProvider>
-                <TeamProvider>
-                  <ProjectResourceProvider>
-                    <ProjectMilestoneProvider>
-                      <AppLayout>{children}</AppLayout>
-                    </ProjectMilestoneProvider>
-                  </ProjectResourceProvider>
-                </TeamProvider>
-              </MemberProvider>
-            </IssueProvider>
-          </CommentProvider>
-        </ActivityProvider>
-      </NotificationProvider>
-    </ProjectProvider>
+    <AuthProvider>
+      <ProjectProvider>
+        <NotificationProvider>
+          <ActivityProvider>
+            <CommentProvider>
+              <IssueProvider>
+                <MemberProvider>
+                  <TeamProvider>
+                    <ProjectResourceProvider>
+                      <ProjectMilestoneProvider>
+                        <AppLayout>{children}</AppLayout>
+                      </ProjectMilestoneProvider>
+                    </ProjectResourceProvider>
+                  </TeamProvider>
+                </MemberProvider>
+              </IssueProvider>
+            </CommentProvider>
+          </ActivityProvider>
+        </NotificationProvider>
+      </ProjectProvider>
+    </AuthProvider>
   );
 }

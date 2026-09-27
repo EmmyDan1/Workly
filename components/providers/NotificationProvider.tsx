@@ -95,7 +95,7 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Socket token exists:", !!token);
+    
 
     if (!token) return;
 
@@ -114,7 +114,7 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     socket.on("notification", (notification: PersistentNotification) => {
-      console.log("REAL-TIME NOTIFICATION RECEIVED:", notification);
+      
       setPersistentNotifications((current) => [notification, ...current]);
     });
 

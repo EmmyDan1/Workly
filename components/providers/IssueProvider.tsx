@@ -8,7 +8,7 @@ import { useComment } from "@/components/providers/CommentProvider";
 
 type IssueContextType = {
   issues: Issue[];
-  addIssue: (issue: Issue) => void;
+  addIssue: (issue: Issue) => Promise<void>;
   updateIssue: (id: string, updates: Partial<Issue>) => void;
   deleteIssue: (id: string) => void;
 
@@ -17,42 +17,65 @@ type IssueContextType = {
 
 const IssueContext = createContext<IssueContextType | null>(null);
 
-const ISSUES_STORAGE_KEY = "project-management-issues";
-
 export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
   const { deleteIssueComments } = useComment();
   const { deleteIssueActivities } = useActivity();
   const { addActivity } = useActivity();
-  const [issues, setIssues] = useState<Issue[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
+  const [issues, setIssues] = useState<Issue[]>([]);
+
+  const addIssue = async (issue: Issue) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
 
     try {
-      const storedIssues = localStorage.getItem(ISSUES_STORAGE_KEY);
+      const response = await fetch("http://localhost:5000/api/issues", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          projectId: issue.projectId,
+          title: issue.title,
+          description: issue.description,
+          status: issue.status,
+          priority: issue.priority,
+          assigneeId: issue.assigneeId || null,
+        }),
+      });
 
-      return storedIssues ? JSON.parse(storedIssues) : [];
+      if (!response.ok) {
+        throw new Error("Failed to create issue");
+      }
+
+      const data = await response.json();
+
+      const newIssue: Issue = {
+        ...issue,
+        id: data.id,
+        projectId: data.project_id,
+        title: data.title,
+        description: data.description ?? "",
+        status: data.status,
+        priority: data.priority,
+        assigneeId: data.assignee_id ?? "",
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
+      };
+
+      setIssues((prevIssues) => [...prevIssues, newIssue]);
+
+      addActivity({
+        id: crypto.randomUUID(),
+        issueId: newIssue.id,
+        actorId: "daniel",
+        type: "created",
+        createdAt: new Date().toISOString(),
+      });
     } catch (error) {
-      console.error("Failed to load issues:", error);
-
-      return [];
+      console.error("Failed to create issue:", error);
     }
-  });
-
-  useEffect(() => {
-    localStorage.setItem(ISSUES_STORAGE_KEY, JSON.stringify(issues));
-  }, [issues]);
-
-  const addIssue = (issue: Issue) => {
-    setIssues((prevIssues) => [...prevIssues, issue]);
-
-    addActivity({
-      id: crypto.randomUUID(),
-      issueId: issue.id,
-      actorId: "daniel",
-      type: "created",
-      createdAt: new Date().toISOString(),
-    });
   };
 
   const updateIssue = (id: string, updates: Partial<Issue>) => {

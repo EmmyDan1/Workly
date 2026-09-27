@@ -21,21 +21,52 @@ const CreateIssueModal = ({
   const { notify } = useNotification();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { members } = useMember();
   const { projects } = useProject();
   const [assigneeId, setAssigneeId] = useState("");
   const [priority, setPriority] = useState<
     "no-priority" | "low" | "medium" | "high" | "urgent"
   >("medium");
 
-  if (!open) return null;
+  const [teamMembers, setTeamMembers] = useState<
+    { id: string; user_id: string; name: string; email: string }[]
+  >([]);
 
   const project = projects.find((item) => item.id === projectId);
 
-  const projectMembers = members.filter((member) =>
-    project?.memberIds?.includes(member.id),
-  );
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      if (!project?.teamId) return;
 
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/teams/${project.teamId}/members`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch team members");
+        }
+
+        const data = await response.json();
+
+        setTeamMembers(data);
+      } catch (error) {
+        console.error("Failed to fetch team members:", error);
+        setTeamMembers([]);
+      }
+    };
+
+    fetchTeamMembers();
+  }, [project?.teamId]);
+
+  if (!open) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,8 +190,8 @@ const CreateIssueModal = ({
             >
               <option value="">Select assignee</option>
 
-              {projectMembers.map((member) => (
-                <option key={member.id} value={member.id}>
+              {teamMembers.map((member) => (
+                <option key={member.user_id} value={member.user_id}>
                   {member.name}
                 </option>
               ))}

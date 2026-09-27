@@ -276,7 +276,7 @@ const PageHeader = ({
             </div>
           )}
         </div>
-
+{/* 
         {headerAction && (
           <button
             type="button"
@@ -287,7 +287,7 @@ const PageHeader = ({
           >
             <headerAction.icon size={17} strokeWidth={2} />
           </button>
-        )}
+        )} */}
       </div>
     </header>
   );
