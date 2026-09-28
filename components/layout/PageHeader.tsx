@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useNotification } from "@/components/providers/NotificationProvider";
+import { navItems } from "@/data/navItems";
 import {
   LightningIcon,
   BellIcon,
@@ -28,8 +29,6 @@ const PageHeader = ({
   title,
   toggleSidebar,
   isSidebarOpen,
-  headerAction,
-  onHeaderAction,
 }: PageHeaderProps) => {
   const [isQuickCreateOpen, setIsQuickCreateOpen] = useState(false);
 
@@ -80,7 +79,8 @@ const PageHeader = ({
     setIsQuickCreateOpen(false);
     openCreateTeamModal();
   };
-
+  const currentNavItem = navItems.find((item) => item.title === title);
+  const TitleIcon = currentNavItem?.icon;
   return (
     <header className="flex h-14 shrink-0 items-center border-b border-border px-4 sm:px-6">
       <div className="flex min-w-0 items-center gap-2">
@@ -96,6 +96,9 @@ const PageHeader = ({
             <PanelLeftOpen size={16} strokeWidth={2} />
           )}
         </button>
+        {TitleIcon && (
+          <TitleIcon size={18} strokeWidth={2} className="text-blue-400" />
+        )}
 
         <span className="mt-1 text-[14px] font-medium text-foreground">
           {title}
@@ -276,7 +279,7 @@ const PageHeader = ({
             </div>
           )}
         </div>
-{/* 
+        {/* 
         {headerAction && (
           <button
             type="button"

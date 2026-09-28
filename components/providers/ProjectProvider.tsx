@@ -21,8 +21,6 @@ type ProjectContextType = {
 
 const ProjectContext = createContext<ProjectContextType | null>(null);
 
-
-
 export const ProjectProvider = ({
   children,
 }: {
@@ -111,11 +109,19 @@ export const ProjectProvider = ({
           health: updates.health,
           priority: updates.priority,
           targetDate: updates.targetDate,
+          icon: updates.icon,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update project");
+        const errorData = await response.json();
+
+        console.error("Update project API error:", {
+          status: response.status,
+          data: errorData,
+        });
+
+        throw new Error(errorData.message || "Failed to update project");
       }
 
       const data = await response.json();

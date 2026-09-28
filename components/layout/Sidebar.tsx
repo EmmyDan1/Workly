@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import type { NavItem } from "@/types/navigation";
+import { navItems } from "@/data/navItems";
 import Link from "next/link";
-import { House, FolderKanban, UsersRound, Settings2 } from "lucide-react";
+
 import SidebarAccount from "./SidebarAccount";
 type SidebarProps = {
   isSidebarOpen: boolean;
@@ -17,28 +17,7 @@ const Sidebar = ({
   toggleSidebar,
   toggleSearch,
 }: SidebarProps) => {
-  const navItems: NavItem[] = [
-    {
-      title: "Workspace",
-      route: "/dashboard",
-      icon: House,
-    },
-    {
-      title: "Projects",
-      route: "/projects",
-      icon: FolderKanban,
-    },
-    {
-      title: "Teams",
-      route: "/teams",
-      icon: UsersRound,
-    },
-    {
-      title: "Settings",
-      route: "/settings",
-      icon: Settings2,
-    },
-  ];
+
 
   return (
     <>

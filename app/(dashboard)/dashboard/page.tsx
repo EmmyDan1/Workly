@@ -12,7 +12,7 @@ import ProjectIcon from "@/components/projects/ProjectIcon";
 
 export default function DashboardPage() {
   const { projects } = useProject();
-
+  const visibleProjects = projects.slice(0, 5);
   const getInitials = (name?: string) => {
     if (!name) return "?";
 
@@ -26,12 +26,11 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
-      
       <div className="mb-10">
         <h1 className="text-3xl font-medium tracking-tight text-blue-400">
           Workspace
         </h1>
-        <p className="mt-1 text-sm text-foreground-muted">
+        <p className="mt-1 text-sm text-foreground-muted  ">
           Manage your projects and team activity
         </p>
       </div>
@@ -53,7 +52,7 @@ export default function DashboardPage() {
             </span>
             <ArrowUpRight
               size={15}
-              className="ml-auto text-foreground-muted opacity-0 transition-opacity group-hover:opacity-100"
+              className="ml-auto text-blue-400 opacity-0 transition-opacity group-hover:opacity-100"
             />
           </Link>
 
@@ -71,7 +70,7 @@ export default function DashboardPage() {
             </span>
             <ArrowUpRight
               size={15}
-              className="ml-auto text-foreground-muted opacity-0 transition-opacity group-hover:opacity-100"
+              className="ml-auto text-blue-400 opacity-0 transition-opacity group-hover:opacity-100"
             />
           </Link>
 
@@ -87,7 +86,7 @@ export default function DashboardPage() {
             <span className="text-sm font-medium text-foreground">Team</span>
             <ArrowUpRight
               size={15}
-              className="ml-auto text-foreground-muted opacity-0 transition-opacity group-hover:opacity-100"
+              className="ml-auto text-blue-400 opacity-0 transition-opacity group-hover:opacity-100"
             />
           </Link>
         </div>
@@ -95,37 +94,37 @@ export default function DashboardPage() {
 
       {/* Projects section */}
       <section>
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between ">
           <h2 className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Projects
           </h2>
-          {projects.length > 0 && (
+          {projects.length > 5 && (
             <Link
               href="/projects"
-              className="text-xs text-foreground-muted transition-colors hover:text-foreground"
+              className="text-xs text-blue-400 transition-colors hover:text-foreground"
             >
               View all →
             </Link>
           )}
         </div>
 
-        <div className="divide-y divide-border border-y border-border">
+        <div className="divide-y divide-border border-y border-border rounded-2xl">
           {projects.length === 0 ? (
-            <div className="py-10 text-center">
+            <div className="py-10 text-center ">
               <p className="text-sm text-foreground-muted">No projects yet.</p>
             </div>
           ) : (
-            projects.map((project) => (
+            visibleProjects.map((project) => (
               <Link
                 key={project.id}
                 href={`/projects/${project.id}`}
-                className="group flex items-center gap-3 py-4 transition-colors hover:bg-surface-hover -mx-4 px-4"
+                className="group flex items-center gap-3 py-4 transition-colors hover:bg-surface-hover -mx-4 px-4 rounded-2xl"
               >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded border border-border bg-surface">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-surface ">
                   <ProjectIcon
                     icon={project.icon}
                     size={17}
-                    className="text-foreground-muted"
+                    className=""
                   />
                 </div>
 
