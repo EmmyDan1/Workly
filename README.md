@@ -10,6 +10,13 @@ Workly is being built as a production-style SaaS application with a modern Next.
 
 > The live deployment is currently being developed alongside the backend. Some features may be limited while the application is under active development.
 
+Use the credentials below to explore the Workly demo:
+
+**Email:** `test@workly.com`  
+**Password:** `TestPassword123!`
+
+> This account is provided for demonstration purposes.
+
 ## Features
 
 ### Authentication & Authorization
